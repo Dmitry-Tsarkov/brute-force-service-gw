@@ -49,7 +49,7 @@ func TestCheckAuth_Integration(t *testing.T) {
 	ctx := context.Background()
 	redisClient := createTestRedisClient()
 	defer redisClient.FlushDB(ctx)
-
+	//test.
 	grpcServer, _, address := startGRPCServer(redisClient)
 	defer grpcServer.Stop()
 
