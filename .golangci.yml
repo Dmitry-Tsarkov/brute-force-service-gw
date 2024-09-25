@@ -10,7 +10,7 @@ linters-settings:
     config: depguard.yml
 
 linters:
-  disable-all: true
+  disable-all: false
   enable:
     - asciicheck
     - bodyclose
