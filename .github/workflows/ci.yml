@@ -30,6 +30,9 @@ jobs:
       - name: Verify Go version
         run: go version
 
+      - name: Go mod tidy (clean up dependencies)
+        run: go mod tidy
+
       - name: Install dependencies
         run: go mod download
 
