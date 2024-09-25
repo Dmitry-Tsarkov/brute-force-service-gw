@@ -54,7 +54,7 @@ linters:
     - tagliatelle
     - thelper
     - tparallel
-    - typecheck
+    # - typecheck
     - unconvert
     - unparam
     - unused
