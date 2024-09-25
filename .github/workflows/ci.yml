@@ -25,10 +25,23 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 1.22
+          go-version: '1.22'
+
+      - name: Verify Go version
+        run: go version
+
+      - name: Verify Go mod status
+        run: go mod tidy
 
       - name: Install dependencies
         run: go mod download
+
+      - name: Install golangci-lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.52.2
+
+      - name: Run golangci-lint
+        run: golangci-lint run
 
       - name: Run tests
         env:
@@ -36,5 +49,5 @@ jobs:
           REDIS_PORT: 6379
         run: go test -v ./...
 
-      - name: Run linters
-        run: golangci-lint run
+      - name: Build the project
+        run: go build -v ./...
