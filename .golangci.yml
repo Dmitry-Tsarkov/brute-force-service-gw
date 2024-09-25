@@ -20,6 +20,7 @@ linters:
     - durationcheck
     - errorlint
     - exhaustive
+    - copyloopvar
     - funlen
     # - gci
     - gocognit
@@ -57,6 +58,6 @@ linters:
     - typecheck
     - unconvert
     - unparam
-    - unused
+    - unused  # Замена deadcode, structcheck, varcheck
     - wastedassign
     - whitespace
