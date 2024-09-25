@@ -1,16 +1,8 @@
-run:
-  tests: true
-
-linters-settings:
-  funlen:
-    lines: 150
-    statements: 80
-
-  depguard:
-    config: depguard.yml
-
 linters:
   disable-all: false
+  disable:
+    - typecheck
+    - gci
   enable:
     - asciicheck
     - bodyclose
@@ -21,7 +13,6 @@ linters:
     - errorlint
     - exhaustive
     - funlen
-    # - gci
     - gocognit
     - goconst
     - gocritic
@@ -54,7 +45,6 @@ linters:
     - tagliatelle
     - thelper
     - tparallel
-    # - typecheck
     - unconvert
     - unparam
     - unused
