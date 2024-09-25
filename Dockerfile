@@ -11,11 +11,11 @@ FROM debian:bullseye-slim
 
 WORKDIR /app
 
-COPY --from=builder /app/brute-force-service-gw /app/brute-force-service-gw
+COPY --from=builder /app/brute-force-service /app/brute-force-service
 
 EXPOSE 50051
 
-CMD ["./brute-force-service-gw"]
+CMD ["./brute-force-service"]
 
 RUN apt-get update && apt-get install -y redis-tools
 
