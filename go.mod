@@ -1,11 +1,9 @@
 module github.com/Dmitry-Tsarkov/brute-force-service-gw
 
-go 1.22
+go 1.23
 
 require (
-	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-redis/redis/v8 v8.11.5
-	github.com/joho/godotenv v1.5.1
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
 	google.golang.org/grpc v1.66.2
