@@ -58,6 +58,6 @@ linters:
     - typecheck
     - unconvert
     - unparam
-    - unused  # Замена deadcode, structcheck, varcheck
+    - unused
     - wastedassign
     - whitespace
