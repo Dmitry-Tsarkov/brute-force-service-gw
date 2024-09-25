@@ -9,7 +9,6 @@ import (
 
 	//nolint:depguard
 	"github.com/go-redis/redis/v8"
-
 	//nolint:depguard
 	pb "github.com/Dmitry-Tsarkov/brute-force-service-gw/api"
 	//nolint:depguard
