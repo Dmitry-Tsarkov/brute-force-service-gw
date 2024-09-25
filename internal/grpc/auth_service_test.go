@@ -27,7 +27,17 @@ func createTestRedisClient() *redisclient.Client {
 
 func TestCheckAuth_WithinLimit(t *testing.T) {
 	redisClient := createTestRedisClient()
-	defer redisClient.FlushDB(context.Background())
+
+	err := redisClient.FlushDB(context.Background())
+	if err != nil {
+		log.Fatalf("Failed to flush DB: %v", err)
+	}
+
+	defer func() {
+		if err := redisClient.FlushDB(context.Background()); err != nil {
+			log.Printf("Error flushing DB: %v", err)
+		}
+	}()
 
 	authServer := &grpc.AuthServiceServer{RedisClient: redisClient}
 
@@ -36,8 +46,10 @@ func TestCheckAuth_WithinLimit(t *testing.T) {
 		Password: "password123",
 		Ip:       "127.0.0.1",
 	}
-	err := redisClient.Set(context.Background(), "whitelist:127.0.0.1", "true", time.Hour)
+
+	err = redisClient.Set(context.Background(), "whitelist:127.0.0.1", "true", time.Hour)
 	assert.NoError(t, err, "Ошибка при добавлении IP в белый список")
+
 	for i := 0; i < 5; i++ {
 		res, err := authServer.CheckAuth(context.Background(), req)
 		assert.NoError(t, err)
@@ -47,7 +59,15 @@ func TestCheckAuth_WithinLimit(t *testing.T) {
 
 func TestCheckAuth_ExceedsLimit(t *testing.T) {
 	redisClient := createTestRedisClient()
-	defer redisClient.FlushDB(context.Background())
+	err := redisClient.FlushDB(context.Background())
+	if err != nil {
+		log.Fatalf("Failed to flush DB: %v", err)
+	}
+	defer func() {
+		if err := redisClient.FlushDB(context.Background()); err != nil {
+			log.Printf("Error flushing DB: %v", err)
+		}
+	}()
 	authServer := &grpc.AuthServiceServer{RedisClient: redisClient}
 	req := &pb.AuthRequest{
 		Login:    "testuser",
@@ -68,7 +88,12 @@ func TestCheckAuth_ExceedsLimit(t *testing.T) {
 
 func TestCheckAuth_Whitelist(t *testing.T) {
 	redisClient := createTestRedisClient()
-	defer redisClient.FlushDB(context.Background())
+	defer func() {
+		if err := redisClient.FlushDB(context.Background()); err != nil {
+			log.Printf("Error flushing DB: %v", err)
+		}
+	}()
+
 	authServer := &grpc.AuthServiceServer{RedisClient: redisClient}
 	err := redisClient.Set(context.Background(), "whitelist:127.0.0.1", "true", time.Hour)
 	assert.NoError(t, err)
@@ -85,8 +110,15 @@ func TestCheckAuth_Whitelist(t *testing.T) {
 
 func TestCheckAuth_Blacklist(t *testing.T) {
 	redisClient := createTestRedisClient()
-	defer redisClient.FlushDB(context.Background())
+
+	defer func() {
+		if err := redisClient.FlushDB(context.Background()); err != nil {
+			log.Printf("Error flushing DB: %v", err)
+		}
+	}()
+
 	authServer := &grpc.AuthServiceServer{RedisClient: redisClient}
+
 	err := redisClient.Set(context.Background(), "blacklist:127.0.0.1", "true", time.Hour)
 	assert.NoError(t, err)
 
@@ -102,7 +134,11 @@ func TestCheckAuth_Blacklist(t *testing.T) {
 
 func TestResetBucket(t *testing.T) {
 	redisClient := createTestRedisClient()
-	defer redisClient.FlushDB(context.Background())
+	defer func() {
+		if err := redisClient.FlushDB(context.Background()); err != nil {
+			log.Printf("Error flushing DB: %v", err)
+		}
+	}()
 
 	authServer := &grpc.AuthServiceServer{RedisClient: redisClient}
 	err := redisClient.Set(context.Background(), "whitelist:127.0.0.1", "true", time.Hour)
@@ -143,7 +179,16 @@ func TestCheckAuth_RedisUnavailable(t *testing.T) {
 
 func TestCheckAuth_AtLimit(t *testing.T) {
 	redisClient := createTestRedisClient()
-	defer redisClient.FlushDB(context.Background())
+	err := redisClient.FlushDB(context.Background())
+	if err != nil {
+		log.Fatalf("Failed to flush DB: %v", err)
+	}
+	defer func() {
+		if err := redisClient.FlushDB(context.Background()); err != nil {
+			log.Printf("Error flushing DB: %v", err)
+		}
+	}()
+
 	authServer := &grpc.AuthServiceServer{RedisClient: redisClient}
 	req := &pb.AuthRequest{
 		Login:    "testuser",
@@ -164,7 +209,16 @@ func TestCheckAuth_AtLimit(t *testing.T) {
 
 func TestCheckAuth_Parallel(t *testing.T) {
 	redisClient := createTestRedisClient()
-	defer redisClient.FlushDB(context.Background())
+	err := redisClient.FlushDB(context.Background())
+	if err != nil {
+		log.Fatalf("Failed to flush DB: %v", err)
+	}
+	defer func() {
+		if err := redisClient.FlushDB(context.Background()); err != nil {
+			log.Printf("Error flushing DB: %v", err)
+		}
+	}()
+
 	authServer := &grpc.AuthServiceServer{RedisClient: redisClient}
 	var wg sync.WaitGroup
 
@@ -198,7 +252,15 @@ func TestCheckAuth_Parallel(t *testing.T) {
 
 func TestCheckAuth_InvalidData(t *testing.T) {
 	redisClient := createTestRedisClient()
-	defer redisClient.FlushDB(context.Background())
+	err := redisClient.FlushDB(context.Background())
+	if err != nil {
+		log.Fatalf("Failed to flush DB: %v", err)
+	}
+	defer func() {
+		if err := redisClient.FlushDB(context.Background()); err != nil {
+			log.Printf("Error flushing DB: %v", err)
+		}
+	}()
 
 	authServer := &grpc.AuthServiceServer{RedisClient: redisClient}
 	req := &pb.AuthRequest{}
