@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - evaluation_b
+      - evaluation
   pull_request:
     branches:
       - main
-      - evaluation_b
+      - evaluation
 
 jobs:
   build:
